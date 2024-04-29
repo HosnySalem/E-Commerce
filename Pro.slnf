@@ -1,0 +1,8 @@
+{
+  "solution": {
+    "path": "E-Commerce.sln",
+    "projects": [
+      "E-Commerce\\E-Commerce.csproj"
+    ]
+  }
+}
