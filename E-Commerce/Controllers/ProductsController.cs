@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using E_Commerce.Helpers;
 using System.Net.Http.Headers;
 using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace E_Commerce.Controllers
 {
@@ -80,138 +81,16 @@ namespace E_Commerce.Controllers
 
         [HttpPost, DisableRequestSizeLimit]
         [Authorize]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct([FromBody]Product product)
         {
-            //if (image != null && image.Length > 0)
-            //{
-            //    var fileName = Path.GetFileNameWithoutExtension(image.FileName) +
-            //                   Path.GetExtension(image.FileName).ToLowerInvariant();
-            //    product.img = Path.Combine("Images", fileName); // Adjust path as needed
-
-            //    using (var fileStream = new FileStream(Path.Combine("wwwroot", product.img), FileMode.Create))
-            //    {
-            //        await image.CopyToAsync(fileStream);
-            //    }
-            //}
-            
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
-        //[HttpPost, DisableRequestSizeLimit]
-        //public async Task<IActionResult> Upload()
-        //{
-        //    try
-        //    {
-        //        var formCollection = await Request.ReadFormAsync();
-        //        var file = formCollection.Files.First();
-        //        var folderName = Path.Combine("Resources", "Images");
-        //        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-        //        if (file.Length > 0)
-        //        {
-        //            var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-        //            var fullPath = Path.Combine(pathToSave, fileName);
-        //            var dbPath = Path.Combine(folderName, fileName);
-        //            using (var stream = new FileStream(fullPath, FileMode.Create))
-        //            {
-        //                file.CopyTo(stream);
-        //            }
-        //            return Ok(new { dbPath });
-        //        }
-        //        else
-        //        {
-        //            return BadRequest();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex}");
-        //    }
-        //}
-
-       
-
-        //// POST: api/Products
-        //[HttpPost, DisableRequestSizeLimit]
-        //public async Task<IActionResult> CreateProduct([FromForm] productVM product, IFormFile image)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    //Category c = _context.Categories.Find(product.CatId);
-        //    Product p1 = new Product() { Name = product.Name,Description = product.Description, CatId = int.Parse(product.CatId), Price = product.Price, QuantityAvailable = product.QuantityAvailable };
-
-//            if (image != null && image.Length > 0)
-//            {
-//                var fileName = Path.GetFileNameWithoutExtension(image.FileName) +
-//                               Path.GetExtension(image.FileName).ToLowerInvariant();
-//        p1.img = Path.Combine("Images", fileName); // Adjust path as needed
-
-//                using (var fileStream = new FileStream(Path.Combine("wwwroot", p1.img), FileMode.Create))
-//                {
-//                    await image.CopyToAsync(fileStream);
-//    }
-//}
-
-//   // await _productRepository.AddProductAsync(product);
-//    await _context.Products.AddRangeAsync(p1);
-//    _context.SaveChanges();
-
-//    return CreatedAtAction("GetProduct", new { id = p1.Id }, product);
-//}
-
-//// PUT: api/Products/5
-//[HttpPut("{id}")]
-//public async Task<IActionResult> UpdateProduct(int id, [FromForm] Product product, IFormFile image)
-//{
-//    if (!ModelState.IsValid)
-//    {
-//        return BadRequest(ModelState);
-//    }
-
-//    if (id != product.Id)
-//    {
-//        return BadRequest();
-//    }
-
-//    var existingProduct = await GetProduct(id);
-//    if (existingProduct == null)
-//    {
-//        return NotFound();
-//    }
-
-//    if (image != null && image.Length > 0)
-//    {
-//        // Handle existing image deletion (optional)
-//        if (!string.IsNullOrEmpty(existingProduct.Value?.img))
-//        {
-//            System.IO.File.Delete(Path.Combine("wwwroot", existingProduct.Value.img));
-//        }
-
-//        var fileName = Path.GetFileNameWithoutExtension(image.FileName) +
-//                       Path.GetExtension(image.FileName).ToLowerInvariant();
-//        product.img = Path.Combine("Images", fileName); // Adjust path as needed
-
-//        using (var fileStream = new FileStream(Path.Combine("wwwroot", product.img), FileMode.Create))
-//        {
-//            await image.CopyToAsync(fileStream);
-//        }
-//    }
-//    else
-//    {
-//        product.img = existingProduct.Value.img; // Maintain existing image path
-//    }
-
-//     _context.Products.Update(product);
-//    _context.SaveChanges();
-
-//    return NoContent();
-//}
-
-[HttpDelete("{id}")]
+      
+        [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteProduct(int id)
         {
